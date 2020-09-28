@@ -1,0 +1,20 @@
+{
+  "name": "byd-devops-cli",
+  "version": "1.0.0",
+  "description": "Some tools for dev-ops",
+  "main": "bin/byd-devops-cli",
+  "bin": {
+    "byd-devops-cli": "./bin/byd-devops-cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "console-table-printer": "^2.4.11",
+    "esm": "^3.2.25",
+    "semver": "^7.3.2",
+    "yargs": "^16.0.3"
+  }
+}
