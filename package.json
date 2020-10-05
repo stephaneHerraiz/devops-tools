@@ -13,6 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@octokit/auth-app": "^2.6.0",
+    "@octokit/rest": "^18.0.6",
+    "@types/node": "^14.11.2",
+    "@types/request": "^2.48.5",
+    "@types/semver": "^7.3.4",
     "console-table-printer": "^2.4.11",
     "esm": "^3.2.25",
     "jira-connector": "^3.1.0",
