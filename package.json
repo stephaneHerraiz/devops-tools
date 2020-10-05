@@ -14,6 +14,7 @@
   "dependencies": {
     "console-table-printer": "^2.4.11",
     "esm": "^3.2.25",
+    "jira-connector": "^3.1.0",
     "semver": "^7.3.2",
     "yargs": "^16.0.3"
   }
