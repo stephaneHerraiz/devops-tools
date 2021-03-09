@@ -16,17 +16,29 @@ class Jira {
           });
     }
 
-    public async getIssuesByActiveSprint(_board: number | string, _statusFilter?: string):Promise<any[]> {
+    public async getIssuesByActiveSprint(_board: number | string,_filter:{ status?: string, jql?: string}):Promise<any[]> {
         try {
 
-            let sprints = await this.jira.board.getAllSprints({ boardId: _board });
+            let sprints = await this.jira.board.getAllSprints({
+                boardId: _board
+            });
+            
             sprints = sprints.values.filter((sprint:any) => {
                 return sprint.state === JIRA_SPRINT_ACTIVE
             });
             let issues: any = [];
-            const jql = `status = "${_statusFilter}"`
+            let jql = '';
+            if (_filter.jql) {
+                jql = `${_filter.jql}`;
+            }
             for(let i=0;i<sprints.length;i++) {
-                const res = await this.jira.sprint.getSprintIssues({ sprintId: sprints[i].id, jql: jql });
+                console.log(`Get sprint id=${sprints[i].id} issues...`);
+                const res = await this.jira.sprint.getSprintIssues({
+                    sprintId: sprints[i].id,
+                    jql: jql,
+                    maxResults: 1000
+                });
+                console.log(`Found ${res.issues.length} issues in sprint id=${sprints[i].id}.`);
                 issues = issues.concat(res.issues);
             };
             
