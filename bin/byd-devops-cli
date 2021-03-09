@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
+const { argv0 } = require("process");
 const yargs = require("yargs");
+
 
 const options = yargs
 .command({
@@ -13,10 +15,41 @@ const options = yargs
             alias: 'ns',
             describe: 'list of namespaces (first namespace is the original)',
             demand: true
-          })
+        })
     },
     handler: (argv) => {
         require('../src/namespacediff').analyse(argv.ns.split(' '));
+    }
+})
+.command({
+    command: 'issuedeploymentstatus',
+    example: `issueDeploymentStatus -ns=namespace -b=12 -j="status = 'Ready for sprint'"`,
+    aliases: ['issuedeploy','ids'],
+    desc: `Check for each issue in a Jira board if it have been deployed or not and the release needed for deployment in a selected namespace.`,
+    builder: (y) => {
+        return y.option('namespace', {
+            alias: 'ns',
+            describe: 'namespace where to check the current release',
+            type: 'string',
+            demand: true
+          })
+          .option('board', {
+            alias: 'b',
+            describe: 'Jira board (to find the Jira board Id check the url : .../secure/RapidBoard.jspa?rapidView=12 -> board 12)',
+            type: 'number',
+            demand: true
+        }).option('jql', {
+            alias: 'j',
+            describe: 'Jira Issue JQL filter (ex : status = "Ready for sprint")',
+            type: 'string'
+        }).option('githubprivatekeypath', {
+            alias: 'k',
+            describe: 'Github private key path)',
+            type: 'string'
+        })
+    },
+    handler: (argv) => {
+        require('../dist/issueDeploymentStatus').issueDeploymentStatus(argv.k, argv.ns, argv.b, argv.j);
     }
 })
   // provide a minimum demand and a minimum demand message
