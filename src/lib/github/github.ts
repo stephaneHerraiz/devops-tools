@@ -17,31 +17,36 @@ interface repository {
 class Github {
     requestWithAuth: any;
     graphqlWithAuth: any;
-    constructor() {
-        
+    private privateKeyPath: string;
+    constructor(privateKeyPath: string) {
+        this.privateKeyPath = privateKeyPath;
     }
 
    init() {
         return new Promise( async (resolve) => {
-            const privateKey: any = await fs.promises.readFile('./src/lib/github/byd-devops-cli.2020-09-29.private-key.pem')
-            const auth = createAppAuth({
-                id: 82788,
-                privateKey: privateKey,
-                installationId: 12111934
-            });
-        
-            this.requestWithAuth = request.defaults({
-                request: {
-                hook: auth.hook
-                }
-            });
+            try {
+                const privateKey: any = await fs.promises.readFile(this.privateKeyPath);
+                const auth = createAppAuth({
+                    id: 82788,
+                    privateKey: privateKey,
+                    installationId: 12111934
+                });
+            
+                this.requestWithAuth = request.defaults({
+                    request: {
+                    hook: auth.hook
+                    }
+                });
 
-            this.graphqlWithAuth = graphql.defaults({
-            request: {
-                hook: auth.hook
-                }
-            });
-            return resolve();
+                this.graphqlWithAuth = graphql.defaults({
+                request: {
+                    hook: auth.hook
+                    }
+                });
+                return resolve();
+            } catch (error) {
+                    
+            }
         });
     }
 
